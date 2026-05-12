@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ Disney Magic Countdown ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pink-deep:#d63384;
+  --pink:#f06292;
+  --pink-light:#f8bbd9;
+  --pink-pale:#fce4ec;
+  --pink-glow:#ff80ab;
+  --gold:#e8b86d;
+  --gold-light:#fde68a;
+  --white:#fff;
+  --cream:#fff8fb;
+  --text-dark:#3d1a2e;
+  --text-mid:#7b3f60;
+  --text-soft:#b07090;
+  --border:#f0bcd4;
+}
+body{background:#fff0f6;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:12px;}
+#disney-root{
+  width:100%;max-width:500px;
+  background:linear-gradient(160deg,#fff 0%,#fce4ec 40%,#fff0f6 70%,#fce4ec 100%);
+  border-radius:24px;overflow:hidden;position:relative;
+  font-family:'Nunito',sans-serif;padding:0 0 32px 0;
+  display:flex;flex-direction:column;align-items:center;
+  box-shadow:0 8px 60px rgba(214,51,132,0.18),0 2px 20px rgba(214,51,132,0.1);
+  border:1px solid #f8bbd9;
+}
+/* --- Petal background --- */
+.petals-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.petal{position:absolute;border-radius:50% 10% 50% 10%;opacity:0.07;animation:floatPetal var(--pd,8s) ease-in-out infinite;background:var(--pink);}
+@keyframes floatPetal{0%,100%{transform:translateY(0) rotate(var(--pr,0deg))}50%{transform:translateY(-14px) rotate(calc(var(--pr,0deg)+15deg))}}
+/* --- Castle --- */
+.castle-wrap{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:200px;opacity:0.06;pointer-events:none;z-index:1;}
+/* --- Sparkles --- */
+.sparkle-field{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.sparkle{position:absolute;font-size:var(--ss,12px);opacity:0;animation:sparkleFade var(--sd,3s) ease-in-out infinite;animation-delay:var(--sdelay,0s);}
+@keyframes sparkleFade{0%,100%{opacity:0;transform:scale(0.5)}50%{opacity:0.35;transform:scale(1)}}
+
+/* --- Header --- */
+.header{position:relative;z-index:2;text-align:center;padding:28px 16px 8px;}
+.crown-emoji{font-size:42px;display:block;margin-bottom:4px;filter:drop-shadow(0 2px 8px rgba(214,51,132,0.3));}
+.title-main{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:1.5px;color:var(--pink-deep);text-shadow:0 1px 12px rgba(214,51,132,0.2);display:block;}
+.title-sub{font-size:10px;letter-spacing:3.5px;color:var(--text-soft);text-transform:uppercase;margin-top:3px;display:block;}
+
+/* --- Countdown --- */
+.countdown-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 18px 4px;width:100%;max-width:480px;}
+.unit-box{background:linear-gradient(145deg,#fff,#fce4ec);border:1px solid var(--border);border-radius:16px;text-align:center;padding:12px 4px 10px;box-shadow:0 2px 12px rgba(214,51,132,0.1),inset 0 1px 0 rgba(255,255,255,0.8);}
+.unit-num{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--pink-deep);text-shadow:0 0 18px rgba(214,51,132,0.3);line-height:1;display:block;}
+.unit-label{font-size:9px;letter-spacing:2.5px;color:var(--text-soft);text-transform:uppercase;margin-top:3px;display:block;}
+.target-line{position:relative;z-index:2;font-size:10px;letter-spacing:1.5px;color:var(--text-soft);text-align:center;padding:4px 0 10px;}
+
+/* --- Quote --- */
+.quote-section{position:relative;z-index:2;width:100%;max-width:480px;padding:0 18px;}
+.quote-box{border:1px solid var(--border);border-radius:16px;padding:14px 18px 12px;background:linear-gradient(135deg,rgba(255,255,255,0.9),rgba(252,228,236,0.6));text-align:center;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(214,51,132,0.08);}
+.quote-box::before{content:'\201C';position:absolute;top:-6px;left:10px;font-size:52px;color:var(--pink-light);font-family:'Playfair Display',serif;line-height:1;}
+.quote-label{font-size:9px;letter-spacing:2.5px;color:var(--pink-deep);text-transform:uppercase;font-weight:700;margin-bottom:6px;display:block;opacity:0.8;}
+.quote-text{font-family:'Playfair Display',serif;font-size:12px;color:var(--text-dark);font-style:italic;line-height:1.6;}
+.quote-char{font-size:10px;color:var(--text-soft);margin-top:6px;display:block;letter-spacing:0.5px;}
+@keyframes quoteIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.quote-animate{animation:quoteIn 0.5s ease-out;}
+
+/* --- Divider --- */
+.divider{position:relative;z-index:2;width:calc(100% - 36px);max-width:444px;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:10px 0 8px;}
+
+/* --- Trivia countdown bar --- */
+.next-trivia-bar{position:relative;z-index:2;width:100%;max-width:480px;padding:0 18px;display:flex;align-items:center;gap:10px;}
+.next-trivia-label{font-size:10px;color:var(--text-soft);letter-spacing:1px;white-space:nowrap;}
+.next-trivia-time{font-size:11px;color:var(--pink-deep);font-weight:700;letter-spacing:1px;}
+.trivia-progress-wrap{flex:1;height:4px;background:var(--pink-pale);border-radius:4px;overflow:hidden;}
+.trivia-progress-bar{height:100%;background:linear-gradient(90deg,var(--pink-deep),var(--gold));border-radius:4px;transition:width 1s linear;}
+
+/* --- Trivia button --- */
+.trivia-btn-wrap{position:relative;z-index:2;padding:0 18px;width:100%;max-width:480px;margin-top:8px;}
+.trivia-main-btn{width:100%;padding:14px;border-radius:30px;cursor:pointer;background:linear-gradient(135deg,var(--pink-deep),#a01060);border:none;color:#fff;font-size:14px;font-family:'Playfair Display',serif;letter-spacing:1.5px;text-shadow:0 1px 4px rgba(0,0,0,0.2);transition:all 0.2s;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(214,51,132,0.35);}
+.trivia-main-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);border-radius:30px;}
+.trivia-main-btn:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(214,51,132,0.45);}
+.trivia-main-btn.locked-btn{background:linear-gradient(135deg,#c8a0b4,#a08090);cursor:default;transform:none!important;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+.trivia-main-btn.pulse{animation:btnPulse 1.5s ease-in-out infinite;}
+@keyframes btnPulse{0%,100%{box-shadow:0 4px 20px rgba(214,51,132,0.35)}50%{box-shadow:0 4px 36px rgba(214,51,132,0.65),0 0 0 8px rgba(214,51,132,0.12)}}
+.new-badge{position:absolute;top:6px;right:12px;background:#fff;color:var(--pink-deep);font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:1px;z-index:1;}
+.trivia-locked-notice{font-size:11px;color:var(--text-soft);text-align:center;margin-top:5px;font-style:italic;}
+
+/* --- Action row --- */
+.action-row{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:0 18px;width:100%;max-width:480px;margin-top:2px;}
+.action-btn{padding:12px 8px;border-radius:20px;cursor:pointer;text-align:center;border:1px solid var(--border);background:linear-gradient(135deg,rgba(255,255,255,0.9),rgba(252,228,236,0.5));color:var(--text-mid);font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;transition:all 0.2s;box-shadow:0 2px 8px rgba(214,51,132,0.08);}
+.action-btn:hover{background:linear-gradient(135deg,#fce4ec,#fff);border-color:var(--pink-light);color:var(--pink-deep);transform:translateY(-1px);}
+.action-btn.locked{opacity:0.45;cursor:default;transform:none!important;}
+.action-btn.weather-ready{border-color:rgba(100,200,255,0.6);background:rgba(100,200,255,0.08);color:#0077aa;animation:btnPulse2 2s ease-in-out infinite;}
+@keyframes btnPulse2{0%,100%{box-shadow:0 0 0 0 rgba(100,200,255,0)}50%{box-shadow:0 0 0 6px rgba(100,200,255,0.15)}}
+
+/* --- Leaderboard --- */
+.scoreboard{position:relative;z-index:2;width:100%;max-width:480px;padding:0 18px;}
+.score-title{font-size:10px;letter-spacing:2.5px;color:var(--pink-deep);text-transform:uppercase;font-weight:700;margin-bottom:8px;text-align:center;opacity:0.8;}
+.leaderboard{display:flex;flex-direction:column;gap:5px;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,0.8),rgba(252,228,236,0.4));border:1px solid var(--border);transition:all 0.4s;}
+.lb-row.first{background:linear-gradient(135deg,rgba(232,184,109,0.15),rgba(255,215,0,0.08));border-color:rgba(232,184,109,0.5);}
+.lb-row.second{background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(200,200,200,0.05));border-color:rgba(192,192,192,0.35);}
+.lb-row.third{background:linear-gradient(135deg,rgba(205,127,50,0.1),rgba(180,100,30,0.05));border-color:rgba(205,127,50,0.3);}
+.lb-rank{font-size:14px;font-weight:700;width:22px;text-align:center;flex-shrink:0;}
+.lb-rank.r1{color:var(--gold)}.lb-rank.r2{color:#aaa}.lb-rank.r3{color:#cd7f32}.lb-rank.r0{color:var(--border)}
+.lb-emoji{font-size:18px;flex-shrink:0;}
+.lb-name{font-size:13px;color:var(--text-dark);font-weight:600;flex:1;}
+.lb-pts{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--pink-deep);}
+.lb-pts-label{font-size:9px;color:var(--text-soft);margin-left:2px;}
+.lb-zero .lb-name{color:var(--text-soft)}.lb-zero .lb-pts{color:var(--border);font-size:14px;}
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4081;margin-right:5px;animation:livePulse 1.2s ease-in-out infinite;vertical-align:middle;}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+.lb-sync{font-size:9px;color:var(--text-soft);text-align:center;margin-top:4px;letter-spacing:1px;}
+
+/* --- Overlay --- */
+.overlay{position:absolute;inset:0;z-index:50;background:linear-gradient(160deg,#fff8fb 0%,#fce4ec 50%,#fff0f6 100%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:22px 18px 28px;overflow-y:auto;border-radius:24px;}
+.overlay.hidden{display:none!important;}
+.overlay-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--pink-deep);text-align:center;letter-spacing:1px;margin-bottom:4px;}
+.overlay-sub{font-size:11px;color:var(--text-soft);letter-spacing:1px;text-align:center;margin-bottom:16px;}
+.close-overlay-btn{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--text-soft);font-size:22px;cursor:pointer;line-height:1;}
+.close-overlay-btn:hover{color:var(--pink-deep);}
+
+/* --- ITINERARY --- */
+.itin-day{width:100%;max-width:440px;margin-bottom:28px;padding-bottom:22px;border-bottom:1px solid var(--border);}.itin-day:last-child{border-bottom:none;margin-bottom:0;}
+.itin-day-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.itin-day-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border:1px solid var(--border);}
+.itin-day-info{flex:1;}
+.itin-day-date{font-size:12px;font-weight:700;color:var(--pink-deep);letter-spacing:1px;}
+.itin-day-park{font-size:11px;color:var(--text-soft);}
+.itin-today-badge{font-size:9px;background:rgba(214,51,132,0.12);border:1px solid var(--pink-deep);color:var(--pink-deep);padding:2px 9px;border-radius:10px;font-weight:700;}
+.itin-event{display:flex;align-items:flex-start;gap:10px;padding:8px 11px;border-radius:10px;background:rgba(255,255,255,0.7);border:1px solid var(--border);margin-bottom:5px;transition:all 0.2s;}
+.itin-event:hover{background:#fff;box-shadow:0 2px 10px rgba(214,51,132,0.1);}
+.itin-event.highlight{background:linear-gradient(135deg,rgba(214,51,132,0.06),rgba(255,255,255,0.8));border-color:rgba(214,51,132,0.25);}
+.itin-event.flight{background:linear-gradient(135deg,rgba(100,170,255,0.07),rgba(255,255,255,0.8));border-color:rgba(100,170,255,0.3);}
+.itin-event-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.itin-event-body{flex:1;min-width:0;}
+.itin-event-name{font-size:12px;color:var(--text-dark);font-weight:600;line-height:1.3;}
+.itin-event-time{font-size:10px;color:var(--text-soft);margin-top:2px;}
+.itin-event-detail{font-size:10px;color:#b0a0b0;margin-top:1px;}
+.maps-link{font-size:10px;color:var(--pink-deep);text-decoration:none;font-weight:700;margin-top:3px;display:inline-flex;align-items:center;gap:3px;opacity:0.8;}
+.maps-link:hover{opacity:1;}
+.itin-hotel{display:flex;align-items:center;gap:8px;padding:5px 10px;}
+.itin-hotel-icon{font-size:13px;}
+.itin-hotel-name{font-size:10px;color:var(--text-soft);font-style:italic;}
+
+/* --- Reservations --- */
+.add-res-btn{font-size:10px;padding:4px 10px;border-radius:10px;border:1px dashed var(--pink-light);background:transparent;color:var(--pink-deep);cursor:pointer;font-weight:600;margin-top:4px;transition:all 0.15s;}
+.add-res-btn:hover{background:rgba(214,51,132,0.08);border-color:var(--pink-deep);}
+.res-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:9px;background:linear-gradient(135deg,rgba(214,51,132,0.07),rgba(255,255,255,0.7));border:1px solid rgba(214,51,132,0.2);margin-top:4px;font-size:11px;color:var(--text-dark);}
+.res-time{color:var(--pink-deep);font-weight:700;font-size:10px;flex-shrink:0;}
+.res-note{flex:1;}
+.res-delete{background:none;border:none;color:#ccc;cursor:pointer;font-size:13px;padding:0 2px;}
+.res-delete:hover{color:#ff6b9d;}
+.res-modal-backdrop{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;padding:16px;}
+.res-modal-backdrop.hidden{display:none!important;}
+.res-modal{background:#fff;border-radius:20px;padding:22px 20px;width:100%;max-width:340px;box-shadow:0 8px 40px rgba(214,51,132,0.2);border:1px solid var(--border);}
+.res-modal h3{font-family:'Playfair Display',serif;color:var(--pink-deep);font-size:16px;margin-bottom:14px;text-align:center;}
+.res-modal label{font-size:11px;color:var(--text-soft);font-weight:600;letter-spacing:1px;display:block;margin-bottom:4px;}
+.res-modal input,.res-modal select{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--border);background:#fff8fb;font-size:13px;color:var(--text-dark);margin-bottom:12px;font-family:'Nunito',sans-serif;outline:none;}
+.res-modal input:focus,.res-modal select:focus{border-color:var(--pink-deep);}
+.res-modal-btns{display:flex;gap:8px;}
+.res-save-btn{flex:1;padding:10px;border-radius:12px;border:none;background:var(--pink-deep);color:#fff;font-weight:700;font-size:13px;cursor:pointer;}
+.res-cancel-btn{padding:10px 16px;border-radius:12px;border:1px solid var(--border);background:#fff;color:var(--text-soft);font-size:13px;cursor:pointer;}
+
+/* --- TRIVIA --- */
+.player-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:360px;margin-bottom:16px;}
+.player-btn{padding:14px 10px;border-radius:14px;cursor:pointer;text-align:center;background:linear-gradient(135deg,rgba(255,255,255,0.8),rgba(252,228,236,0.4));border:1px solid var(--border);color:var(--text-dark);font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;transition:all 0.18s;}
+.player-btn:hover{background:#fff;border-color:var(--pink-light);}
+.player-btn.selected{background:linear-gradient(135deg,rgba(214,51,132,0.12),rgba(252,228,236,0.6));border-color:var(--pink-deep);color:var(--pink-deep);}
+.player-emoji{font-size:24px;display:block;margin-bottom:4px;}
+.start-btn{padding:12px 32px;border-radius:30px;cursor:pointer;background:linear-gradient(135deg,var(--pink-deep),#a01060);border:none;color:#fff;font-family:'Playfair Display',serif;font-size:14px;letter-spacing:1px;transition:all 0.2s;margin-top:4px;box-shadow:0 4px 18px rgba(214,51,132,0.3);}
+.start-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 24px rgba(214,51,132,0.4);}
+.start-btn:disabled{opacity:0.35;cursor:default;}
+.hard-badge{display:inline-block;background:rgba(214,51,132,0.1);border:1px solid rgba(214,51,132,0.3);color:var(--pink-deep);font-size:9px;letter-spacing:2px;padding:3px 12px;border-radius:10px;margin-bottom:12px;}
+.trivia-q{font-family:'Playfair Display',serif;font-size:15px;color:var(--text-dark);line-height:1.65;text-align:center;margin-bottom:16px;font-style:italic;}
+.trivia-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:380px;margin-bottom:14px;}
+.choice-btn{padding:12px 10px;border-radius:12px;cursor:pointer;text-align:center;background:linear-gradient(135deg,rgba(255,255,255,0.8),rgba(252,228,236,0.3));border:1px solid var(--border);color:var(--text-dark);font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;transition:all 0.15s;line-height:1.4;}
+.choice-btn:hover:not(:disabled){background:#fff;border-color:var(--pink-light);color:var(--pink-deep);}
+.choice-btn.correct{background:linear-gradient(135deg,rgba(85,239,196,0.2),rgba(85,239,196,0.05));border-color:#55efc4;color:#00856f;}
+.choice-btn.wrong{background:linear-gradient(135deg,rgba(255,100,100,0.15),rgba(255,100,100,0.05));border-color:#ff6464;color:#cc2222;}
+.choice-btn:disabled{cursor:default;}
+.answerer-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:14px;max-width:380px;}
+.answerer-chip{padding:7px 16px;border-radius:20px;cursor:pointer;background:rgba(255,255,255,0.7);border:1px solid var(--border);color:var(--text-mid);font-size:12px;font-weight:600;transition:all 0.15s;}
+.answerer-chip:hover{background:#fff;border-color:var(--pink-light);}
+.answerer-chip.active{background:linear-gradient(135deg,rgba(214,51,132,0.12),rgba(252,228,236,0.5));border-color:var(--pink-deep);color:var(--pink-deep);}
+.trivia-feedback{font-size:14px;text-align:center;margin-bottom:6px;min-height:22px;font-weight:700;}
+.trivia-feedback.good{color:#00856f}.trivia-feedback.bad{color:#cc2222}
+.returning-msg{font-size:11px;color:var(--text-soft);text-align:center;letter-spacing:1px;margin-top:4px;}
+.trivia-locked-screen{text-align:center;padding:20px 10px;}
+.trivia-locked-screen .lock-icon{font-size:48px;margin-bottom:12px;}
+.trivia-locked-screen h3{font-family:'Playfair Display',serif;color:var(--pink-deep);font-size:18px;margin-bottom:8px;}
+.trivia-locked-screen p{color:var(--text-soft);font-size:13px;line-height:1.6;margin-bottom:6px;}
+.trivia-window-list{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:6px;}
+.trivia-window-list li{background:linear-gradient(135deg,rgba(214,51,132,0.08),rgba(255,255,255,0.7));border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:12px;color:var(--text-dark);font-weight:600;display:flex;align-items:center;justify-content:space-between;}
+.trivia-window-list li.active-window{background:linear-gradient(135deg,rgba(214,51,132,0.15),rgba(252,228,236,0.6));border-color:var(--pink-deep);color:var(--pink-deep);}
+.trivia-window-list li.next-window{background:linear-gradient(135deg,rgba(232,184,109,0.12),rgba(255,255,255,0.7));border-color:rgba(232,184,109,0.5);}
+.countdown-to-unlock{font-size:22px;font-family:'Playfair Display',serif;color:var(--pink-deep);font-weight:700;margin:10px 0;}
+
+/* --- Weather --- */
+.weather-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;max-width:400px;margin-top:4px;}
+.weather-card{background:linear-gradient(135deg,rgba(255,255,255,0.8),rgba(252,228,236,0.3));border:1px solid var(--border);border-radius:14px;padding:10px 10px 8px;text-align:center;}
+.weather-date{font-size:10px;color:var(--pink-deep);letter-spacing:1px;margin-bottom:4px;font-weight:700;}
+.weather-icon{font-size:24px;display:block;margin-bottom:4px;}
+.weather-temp{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text-dark);}
+.weather-rain{font-size:10px;color:var(--text-soft);margin-top:2px;}
+.park-rating{font-size:10px;margin-top:3px;font-weight:600;}
+.rating-great{color:#00856f}.rating-good{color:var(--pink-deep)}.rating-ok{color:#e08020}.rating-rough{color:#cc2222}
+.weather-loading{color:var(--text-soft);font-size:13px;text-align:center;padding:20px;}
+
+/* --- Winner --- */
+.winner-wrap{text-align:center;}
+.winner-crown{font-size:56px;display:block;margin-bottom:10px;}
+.winner-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--pink-deep);letter-spacing:1.5px;margin-bottom:8px;}
+.winner-treat{font-size:13px;color:var(--text-dark);line-height:1.7;margin-bottom:16px;max-width:320px;}
+.final-scores{width:100%;max-width:360px;margin-top:8px;}
+.final-score-row{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-radius:10px;margin-bottom:5px;background:linear-gradient(135deg,rgba(255,255,255,0.8),rgba(252,228,236,0.3));border:1px solid var(--border);}
+.final-score-row.gold{background:linear-gradient(135deg,rgba(232,184,109,0.15),rgba(255,215,0,0.05));border-color:rgba(232,184,109,0.5);}
+.final-name{font-size:13px;color:var(--text-dark);font-weight:600}.final-pts{font-family:'Playfair Display',serif;font-size:15px;color:var(--pink-deep);font-weight:700}
+
+/* --- Misc --- */
+#fw-canvas{position:absolute;inset:0;pointer-events:none;z-index:10;border-radius:24px;}
+.pixie{position:absolute;width:5px;height:5px;border-radius:50%;pointer-events:none;z-index:9;animation:pixie-fall 1.3s ease-out forwards;}
+@keyframes pixie-fall{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(50px) scale(0)}}
+@keyframes hour-glow{0%{text-shadow:0 0 12px rgba(214,51,132,0.3)}50%{text-shadow:0 0 36px var(--pink-deep),0 0 60px rgba(214,51,132,0.4)}100%{text-shadow:0 0 12px rgba(214,51,132,0.3)}}
+.flash{animation:hour-glow 0.7s ease-in-out 3;}
+.wand-spark{position:fixed;pointer-events:none;z-index:9999;font-size:14px;animation:wand-pop 0.8s ease-out forwards;}
+@keyframes wand-pop{0%{opacity:1;transform:scale(1) translateY(0)}100%{opacity:0;transform:scale(.2) translateY(-28px)}}
+@keyframes fadeIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
+.fade-in{animation:fadeIn 0.3s ease-out;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div id="disney-root">
+  <canvas id="fw-canvas"></canvas>
+
+  <!-- Pink petal background -->
+  <div class="petals-bg" id="petals-bg"></div>
+  <div class="sparkle-field" id="sparkle-field"></div>
+
+  <!-- Castle silhouette -->
+  <div class="castle-wrap">
+    <svg viewBox="0 0 260 180" fill="none">
+      <rect x="100" y="100" width="60" height="80" fill="#d63384"/>
+      <rect x="70" y="120" width="30" height="60" fill="#d63384"/>
+      <rect x="160" y="120" width="30" height="60" fill="#d63384"/>
+      <rect x="40" y="135" width="25" height="45" fill="#d63384"/>
+      <rect x="195" y="135" width="25" height="45" fill="#d63384"/>
+      <polygon points="130,30 115,100 145,100" fill="#d63384"/>
+      <polygon points="85,60 75,120 95,120" fill="#d63384"/>
+      <polygon points="175,60 165,120 185,120" fill="#d63384"/>
+      <polygon points="52,80 42,135 62,135" fill="#d63384"/>
+      <polygon points="207,80 197,135 217,135" fill="#d63384"/>
+      <rect x="112" y="140" width="36" height="40" rx="18" fill="#d63384" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="crown-emoji">🏰✨👑</span>
+    <span class="title-main">The Magic Begins In</span>
+    <span class="title-sub">A Disney Countdown · May 27, 2026</span>
+  </div>
+
+  <!-- Countdown -->
+  <div class="countdown-grid">
+    <div class="unit-box"><span class="unit-num" id="cd-days">00</span><span class="unit-label">Days</span></div>
+    <div class="unit-box"><span class="unit-num" id="cd-hours">00</span><span class="unit-label">Hours</span></div>
+    <div class="unit-box"><span class="unit-num" id="cd-mins">00</span><span class="unit-label">Minutes</span></div>
+    <div class="unit-box"><span class="unit-num" id="cd-secs">00</span><span class="unit-label">Seconds</span></div>
+  </div>
+  <div class="target-line">✈️ Southwest WN578 departs DAL 2:20 PM → MCO 5:55 PM</div>
+
+  <!-- Quote -->
+  <div class="quote-section">
+    <div class="quote-box" id="quote-box">
+      <span class="quote-label">* Enchanted Wisdom *</span>
+      <p class="quote-text" id="quote-text"></p>
+      <span class="quote-char" id="quote-char"></span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Action row -->
+  <div class="action-row">
+    <button class="action-btn" onclick="openItinerary()">🗺️ View Itinerary</button>
+    <button class="action-btn locked" id="weather-btn" onclick="openWeather()">🌤️ Trip Forecast<br><span style="font-size:9px;opacity:0.7;" id="weather-sub">Unlocks in 7 days</span></button>
+    <button class="action-btn locked" id="maps-btn" onclick="openMaps()">🗺️ Park Maps<br><span style="font-size:9px;opacity:0.7;" id="maps-sub">Unlocks in 3 days</span></button>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Trivia countdown bar -->
+  <div class="next-trivia-bar">
+    <span class="next-trivia-label">⏱ Trivia window</span>
+    <span class="next-trivia-time" id="next-trivia-time">--:--:--</span>
+    <div class="trivia-progress-wrap"><div class="trivia-progress-bar" id="trivia-progress" style="width:0%"></div></div>
+  </div>
+  <div class="trivia-btn-wrap" style="margin-top:8px;">
+    <button class="trivia-main-btn" id="trivia-main-btn" onclick="openTrivia()">
+      * Ready for Disney Trivia? *
+      <span class="new-badge hidden" id="new-badge">OPEN!</span>
+    </button>
+    <div class="trivia-locked-notice hidden" id="trivia-locked-notice">🔒 Next window opens at <span id="next-window-label">--:--</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Leaderboard -->
+  <div class="scoreboard">
+    <div class="score-title"><span class="live-dot"></span>Live Leaderboard *</div>
+    <div class="leaderboard" id="leaderboard"></div>
+    <div class="lb-sync" id="lb-sync">Syncing scores...</div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay hidden" id="overlay">
+    <button class="close-overlay-btn" onclick="closeOverlay()">✕</button>
+
+    <!-- ITINERARY -->
+    <div id="screen-itinerary" class="hidden fade-in" style="width:100%;max-width:440px;">
+      <div class="overlay-title">🏰 Our Disney Trip</div>
+      <div class="overlay-sub">May 27 – June 4, 2026 · Walt Disney World Swan Hotel</div>
+      <div id="itin-days"></div>
+    </div>
+
+    <!-- TRIVIA SELECT -->
+    <div id="screen-select" class="hidden fade-in">
+      <div class="overlay-title">✨ Who's Playing? ✨</div>
+      <div class="overlay-sub">one hard question · one point · good luck</div>
+      <div class="player-grid" id="player-grid"></div>
+      <button class="start-btn" id="start-game-btn" onclick="startGame()" disabled>Let the Magic Begin *</button>
+    </div>
+
+    <!-- TRIVIA LOCKED -->
+    <div id="screen-locked" class="hidden fade-in">
+      <div class="trivia-locked-screen">
+        <div class="lock-icon">🔒</div>
+        <h3>Trivia is Locked</h3>
+        <p>Trivia opens <strong>3 times a day</strong> — at 1:00 AM, 9:00 AM, and 5:00 PM. Each person gets one answer per window!</p>
+        <ul class="trivia-window-list" id="window-list">
+          <li id="win-1am">🌙 1:00 AM</li>
+          <li id="win-9am">☀️ 9:00 AM</li>
+          <li id="win-5pm">🌅 5:00 PM</li>
+        </ul>
+        <p style="font-size:11px;color:var(--text-soft);">Next window opens in</p>
+        <div class="countdown-to-unlock" id="unlock-countdown">--:--:--</div>
+        <button class="start-btn" style="margin-top:8px;" onclick="closeOverlay()">Got it *</button>
+      </div>
+    </div>
+
+    <!-- TRIVIA QUESTION -->
+    <div id="screen-question" class="hidden fade-in">
+      <div class="overlay-title" style="font-size:15px;">* Disney Trivia *</div>
+      <div class="hard-badge">⚡ Hard Question</div>
+      <div class="trivia-q" id="trivia-q"></div>
+      <div style="font-size:11px;color:var(--text-soft);margin-bottom:10px;letter-spacing:1px;">Who's answering?</div>
+      <div class="answerer-row" id="answerer-row"></div>
+      <div class="trivia-choices" id="trivia-choices"></div>
+      <div class="trivia-feedback" id="trivia-feedback"></div>
+      <div class="returning-msg hidden" id="returning-msg">Returning to countdown in <span id="return-count">3</span>...</div>
+    </div>
+
+    <!-- WEATHER -->
+    <div id="screen-weather" class="hidden fade-in">
+      <div class="overlay-title" style="font-size:15px;">🌤️ Trip Forecast</div>
+      <div class="overlay-sub">Orlando, FL · May 27 – June 4</div>
+      <div id="weather-content"><div class="weather-loading">Loading forecast... ✨</div></div>
+    </div>
+
+    <!-- PARK MAPS -->
+    <div id="screen-maps" class="hidden fade-in" style="width:100%;max-width:440px;">
+      <div class="overlay-title" style="font-size:16px;margin-bottom:2px;">🗺️ Park Maps</div>
+      <div class="overlay-sub">Tap any park to open the official Disney map</div>
+      <div id="maps-content"></div>
+    </div>
+
+    <!-- WINNER -->
+    <div id="screen-winner" class="hidden fade-in">
+      <div class="winner-wrap" id="winner-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Reservation modal -->
+<div class="res-modal-backdrop hidden" id="res-modal-backdrop">
+  <div class="res-modal">
+    <h3>➕ Add Reservation</h3>
+    <label>TIME</label>
+    <input type="time" id="res-time-input" />
+    <label>RESERVATION / NOTE</label>
+    <input type="text" id="res-note-input" placeholder="e.g. Be Our Guest 6:30 PM" maxlength="80" />
+    <div class="res-modal-btns">
+      <button class="res-cancel-btn" onclick="closeResModal()">Cancel</button>
+      <button class="res-save-btn" onclick="saveReservation()">Save *</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+// --- Petal & sparkle decorations ---------------------------------------
+const petBg=document.getElementById('petals-bg');
+for(let i=0;i<18;i++){const p=document.createElement('div');p.className='petal';const s=20+Math.random()*50;p.style.cssText=`width:${s}px;height:${s*0.7}px;left:${Math.random()*100}%;top:${Math.random()*80}%;--pd:${(6+Math.random()*8).toFixed(1)}s;--pr:${Math.floor(Math.random()*360)}deg;animation-delay:${(Math.random()*6).toFixed(1)}s`;petBg.appendChild(p);}
+const spField=document.getElementById('sparkle-field');
+const spArr=['*','✧','⋆','·','*'];
+for(let i=0;i<30;i++){const s=document.createElement('div');s.className='sparkle';s.textContent=spArr[Math.floor(Math.random()*spArr.length)];const ss=8+Math.random()*14;s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*90}%;--ss:${ss}px;--sd:${(2+Math.random()*4).toFixed(1)}s;--sdelay:${(Math.random()*4).toFixed(1)}s;color:var(--pink-light);`;spField.appendChild(s);}
+
+// --- Fireworks & pixie --------------------------------------------------
+const canvas=document.getElementById('fw-canvas'),ctx=canvas.getContext('2d');
+let particles=[],fwRunning=false;
+function resizeCanvas(){const r=document.getElementById('disney-root');canvas.width=r.offsetWidth;canvas.height=r.offsetHeight;}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+function launchFireworks(count){const w=canvas.width,h=canvas.height,colors=['#d63384','#f06292','#f8bbd9','#e8b86d','#fff','#ff80ab','#fd79a8','#fde68a'];for(let i=0;i<count;i++){setTimeout(()=>{const cx=w*(.15+Math.random()*.7),cy=h*(.05+Math.random()*.4),c=colors[Math.floor(Math.random()*colors.length)],num=26+Math.floor(Math.random()*14);for(let j=0;j<num;j++){const angle=(j/num)*Math.PI*2,speed=1.5+Math.random()*4;particles.push({x:cx,y:cy,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-.6,alpha:1,color:c,size:1.8+Math.random()*2.2,gravity:.07,drag:.975,trail:[]});}},i*160);}if(!fwRunning){fwRunning=true;animateFireworks();}}
+function animateFireworks(){ctx.clearRect(0,0,canvas.width,canvas.height);particles=particles.filter(p=>p.alpha>.02);particles.forEach(p=>{p.trail.push({x:p.x,y:p.y,a:p.alpha});if(p.trail.length>6)p.trail.shift();p.trail.forEach((t,i)=>{ctx.beginPath();ctx.arc(t.x,t.y,p.size*(i/p.trail.length)*.7,0,Math.PI*2);ctx.fillStyle=p.color;ctx.globalAlpha=t.a*(i/p.trail.length)*.4;ctx.fill();});ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle=p.color;ctx.globalAlpha=p.alpha;ctx.fill();ctx.globalAlpha=1;p.vy+=p.gravity;p.vx*=p.drag;p.vy*=p.drag;p.x+=p.vx;p.y+=p.vy;p.alpha-=.014;});if(particles.length>0)requestAnimationFrame(animateFireworks);else{fwRunning=false;ctx.clearRect(0,0,canvas.width,canvas.height);}}
+function spawnPixie(){const root=document.getElementById('disney-root'),colors=['#d63384','#f8bbd9','#e8b86d','#f06292','#fff'];for(let i=0;i<7;i++){const p=document.createElement('div');p.className='pixie';p.style.cssText=`left:${10+Math.random()*80}%;top:${20+Math.random()*45}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${(Math.random()*.4).toFixed(2)}s;animation-duration:${(1+Math.random()*.6).toFixed(1)}s`;root.appendChild(p);setTimeout(()=>p.remove(),2000);}}
+document.getElementById('disney-root').addEventListener('click',function(e){if(e.target.closest('.overlay')||e.target.closest('.trivia-main-btn')||e.target.closest('.action-row')||e.target.closest('.res-modal-backdrop'))return;const sp=['✨','⭐','💫','*','🌸'];for(let i=0;i<4;i++){const el=document.createElement('div');el.className='wand-spark';el.textContent=sp[Math.floor(Math.random()*sp.length)];el.style.left=(e.clientX+(Math.random()-.5)*40)+'px';el.style.top=(e.clientY+(Math.random()-.5)*40)+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),900);}launchFireworks(5);});
+setTimeout(()=>launchFireworks(10),500);
+
+// --- Screen nav ---------------------------------------------------------
+function showScreen(name){['itinerary','select','question','weather','maps','winner','locked'].forEach(s=>{const el=document.getElementById('screen-'+s);if(el){el.classList.toggle('hidden',s!==name);if(s===name){el.classList.remove('fade-in');void el.offsetWidth;el.classList.add('fade-in');if(s==='maps')buildMaps();}}});}
+
+const PARK_MAPS=[
+  {name:'Magic Kingdom',emoji:'🏰',
+   link:'https://www.disneyworld.disney.go.com/maps/magic-kingdom-park/',
+   color:'rgba(255,100,150,0.12)',
+   tip:'Get here early! Tron & Space Mountain fill up fast.'},
+  {name:'EPCOT',emoji:'🌐',
+   link:'https://www.disneyworld.disney.go.com/maps/epcot/',
+   color:'rgba(100,180,255,0.12)',
+   tip:'World Showcase opens at 11am — Future World first!'},
+  {name:'Hollywood Studios',emoji:'🎬',
+   link:'https://www.disneyworld.disney.go.com/maps/disney-hollywood-studios/',
+   color:'rgba(255,165,0,0.12)',
+   tip:'Run to Rise of the Resistance the moment you enter!'},
+  {name:'Animal Kingdom',emoji:'🦁',
+   link:'https://www.disneyworld.disney.go.com/maps/animal-kingdom-park/',
+   color:'rgba(100,200,120,0.12)',
+   tip:'Flight of Passage — go straight there at rope drop!'},
+  {name:'Disney Springs',emoji:'🛍️',
+   link:'https://www.disneyworld.disney.go.com/maps/disney-springs/',
+   color:'rgba(200,168,255,0.12)',
+   tip:'No ticket needed — perfect for shopping & dining!'},
+];
+
+function buildMaps(){
+  const c=document.getElementById('maps-content');
+  if(!c||c.children.length>0)return;
+  PARK_MAPS.forEach(park=>{
+    const card=document.createElement('div');
+    card.style.cssText='margin-bottom:12px;border-radius:14px;overflow:hidden;border:1px solid rgba(200,168,255,0.25);background:'+park.color+';cursor:pointer;';
+    card.onclick=function(){window.open(park.link,'_blank');};
+    card.innerHTML=
+      '<div style="padding:12px 14px;display:flex;align-items:center;gap:10px;justify-content:space-between;">'
+        +'<div style="display:flex;align-items:center;gap:10px;">'
+          +'<span style="font-size:24px;">'+park.emoji+'</span>'
+          +'<div>'
+            +'<div style="font-size:14px;font-weight:700;color:var(--pink-deep);font-family:Playfair Display,serif;">'+park.name+'</div>'
+            +'<div style="font-size:10px;color:var(--text-soft);margin-top:2px;">💡 '+park.tip+'</div>'
+          +'</div>'
+        +'</div>'
+        +'<span style="font-size:18px;color:var(--pink-mid);">↗</span>'
+      +'</div>';
+    c.appendChild(card);
+  });
+  const note=document.createElement('div');
+  note.style.cssText='text-align:center;font-size:10px;color:var(--text-soft);margin-top:4px;font-family:sans-serif;padding-bottom:8px;';
+  note.textContent='Opens official Disney map in your browser ↗';
+  c.appendChild(note);
+}
+function closeOverlay(){document.getElementById('overlay').classList.add('hidden');}
+window.closeOverlay=closeOverlay;
+
+// --- Players -------------------------------------------------------------
+const PLAYERS=[{name:'Emmy',emoji:'👸'},{name:'Canden',emoji:'🧚'},{name:'Dennis',emoji:'🧙'},{name:'Bella',emoji:'🌹'},{name:'Parker',emoji:'⚡'},{name:'Easton',emoji:'🏰'},{name:'Lexi',emoji:'✨'}];
+let activePlayers=[],selectedAnswerer=null,answered=false,gameOver=false,returnTimer=null;
+
+// --- Trivia window logic -------------------------------------------------
+// Windows: 1am, 9am, 5pm (CT). Each allows exactly one question per window per calendar day.
+// Key stored in localStorage: "trivia_used_YYYY-MM-DD-WINDOW"
+const WINDOWS=[
+  {hour:1, label:'1:00 AM', id:'1am', icon:'🌙'},
+  {hour:9, label:'9:00 AM', id:'9am', icon:'☀️'},
+  {hour:17,label:'5:00 PM', id:'5pm', icon:'🌅'},
+];
+
+function getTodayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
+function getWindowUsedKey(winId){return `trivia_used_${getTodayKey()}_${winId}`;}
+function getPlayerWindowKey(playerName,winId){return `trivia_used_${getTodayKey()}_${winId}_${playerName}`;}
+function hasPlayerAnsweredInWindow(playerName,winId){return !!localStorage.getItem(getPlayerWindowKey(playerName,winId));}
+function markPlayerAnsweredInWindow(playerName,winId){localStorage.setItem(getPlayerWindowKey(playerName,winId),'1');}
+
+// --- Personal "I answered" tracking (per device, localStorage only) -------
+// This makes YOUR button go grey immediately on YOUR phone after you answer
+// independent of Firebase sync
+const PERSONAL_KEY='disney_i_answered';
+function getPersonalAnsweredKey(){
+  const d=new Date();
+  const cw=getCurrentWindow();
+  if(!cw)return null;
+  return PERSONAL_KEY+'_'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'_'+cw.id;
+}
+function markMyselfAnswered(){
+  const k=getPersonalAnsweredKey();
+  if(k)localStorage.setItem(k,'1');
+}
+function haveIAnswered(){
+  const k=getPersonalAnsweredKey();
+  return k?!!localStorage.getItem(k):false;
+}
+
+function getCurrentWindow(){
+  const now=new Date(),h=now.getHours();
+  // Find which window we're currently in (within 8 hours after open)
+  for(let i=WINDOWS.length-1;i>=0;i--){
+    const w=WINDOWS[i];
+    let openH=w.hour, closeH=openH+8;
+    if(h>=openH&&h<closeH) return w;
+    // Handle midnight wrap for 1am: if hour is 1-8
+  }
+  return null;
+}
+function getNextWindow(){
+  const now=new Date(),h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();
+  // Sort windows by distance to next open
+  let best=null,bestMs=Infinity;
+  WINDOWS.forEach(w=>{
+    let candidate=new Date();
+    candidate.setHours(w.hour,0,0,0);
+    if(candidate<=now){candidate.setDate(candidate.getDate()+1);}
+    const ms=candidate-now;
+    if(ms<bestMs){bestMs=ms;best={window:w,ms,candidate};}
+  });
+  return best;
+}
+function isTriviaOpen(){
+  const cw=getCurrentWindow();
+  if(!cw) return {open:false,reason:'no-window'};
+  return {open:true,window:cw};
+}
+function markWindowUsed(winId){localStorage.setItem(getWindowUsedKey(winId),'1');}// kept for locked-screen display only
+
+function formatMsCountdown(ms){
+  const totalS=Math.floor(ms/1000);
+  const h=Math.floor(totalS/3600),m=Math.floor((totalS%3600)/60),s=totalS%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function updateTriviaUI(){
+  const status=isTriviaOpen();
+  const btn=document.getElementById('trivia-main-btn');
+  const badge=document.getElementById('new-badge');
+  const lockedNotice=document.getElementById('trivia-locked-notice');
+  const nextLbl=document.getElementById('next-window-label');
+  const timeEl=document.getElementById('next-trivia-time');
+  const progressEl=document.getElementById('trivia-progress');
+
+  if(status.open){
+    const cw=status.window;
+    const iAnswered=haveIAnswered(); // personal device check — immediate
+    const allAnswered=PLAYERS.every(p=>hasPlayerAnsweredLive(p.name));
+
+    if(iAnswered||allAnswered){
+      // MY button goes grey the moment I answer (iAnswered = localStorage, instant)
+      btn.classList.remove('pulse');
+      btn.classList.add('locked-btn');
+      badge.classList.add('hidden');
+      lockedNotice.classList.remove('hidden');
+      const nxt=getNextWindow();
+      if(nxt){
+        nextLbl.textContent=nxt.window.label;
+        timeEl.textContent=iAnswered&&!allAnswered?'You answered ✓ · Next: '+formatMsCountdown(nxt.ms):'Next: '+formatMsCountdown(nxt.ms);
+        const pct=Math.max(0,Math.min(100,100*(1-(nxt.ms/(8*3600000)))));
+        progressEl.style.width=pct.toFixed(1)+'%';
+      }
+    } else {
+      btn.classList.remove('locked-btn');
+      btn.classList.add('pulse');
+      badge.classList.remove('hidden');
+      lockedNotice.classList.add('hidden');
+      const closeTime=new Date();
+      closeTime.setHours(cw.hour+8,0,0,0);
+      const msLeft=closeTime-new Date();
+      const pctDone=Math.max(0,Math.min(100,100*(1-(msLeft/(8*3600000)))));
+      timeEl.textContent='Closes in '+formatMsCountdown(Math.max(0,msLeft));
+      progressEl.style.width=pctDone.toFixed(1)+'%';
+      nextLbl.textContent=cw.label;
+    }
+  } else {
+    btn.classList.remove('pulse');
+    btn.classList.add('locked-btn');
+    badge.classList.add('hidden');
+    lockedNotice.classList.remove('hidden');
+    const nxt=getNextWindow();
+    if(nxt){
+      nextLbl.textContent=nxt.window.label;
+      timeEl.textContent=formatMsCountdown(nxt.ms);
+      // Fill bar as we approach next window — max gap between windows is 8h
+      const pct=Math.max(0,Math.min(100,100*(1-(nxt.ms/(8*3600000)))));
+      progressEl.style.width=pct.toFixed(1)+'%';
+    }
+  }
+}
+
+// --- Open trivia ---------------------------------------------------------
+window.openTrivia=function(){
+  const status=isTriviaOpen();
+  document.getElementById('overlay').classList.remove('hidden');
+  if(status.open){
+    showScreen('select');buildPlayerSelect();
+  } else {
+    showScreen('locked');updateLockedScreen();
+  }
+  document.getElementById('new-badge').classList.add('hidden');
+};
+
+function updateLockedScreen(){
+  const nxt=getNextWindow();
+  const now=new Date();
+  const cw=getCurrentWindow();
+  // Big countdown — only shown when no window is active
+  const unlockEl=document.getElementById('unlock-countdown');
+  if(cw){
+    // A window is open — show who still needs to answer (live from Firebase)
+    const remaining=PLAYERS.filter(p=>!hasPlayerAnsweredLive(p.name));
+    unlockEl.textContent=remaining.length===0?'All done! ✓':remaining.map(p=>p.emoji).join(' ')+' still to answer';
+    unlockEl.style.fontSize=remaining.length===0?'22px':'28px';
+  } else {
+    if(nxt) unlockEl.textContent=formatMsCountdown(nxt.ms);
+    unlockEl.style.fontSize='';
+  }
+  // Per-window rows with live time left + per-player indicators
+  WINDOWS.forEach(w=>{
+    const el=document.getElementById('win-'+w.id);
+    if(!el)return;
+    const isNext=nxt&&nxt.window.id===w.id;
+    const isActive=cw&&cw.id===w.id;
+    el.className=isActive?'active-window':(isNext?'next-window':'');
+    let timeLabel='';
+    if(isActive){
+      const closeTime=new Date();closeTime.setHours(w.hour+8,0,0,0);
+      const msLeft=closeTime-now;
+      // Show player dots: green=answered, pink=pending
+      const dots=PLAYERS.map(p=>hasPlayerAnsweredLive(p.name)
+        ?`<span title="${p.name} ✓" style="font-size:13px;opacity:0.9;">${p.emoji}</span>`
+        :`<span title="${p.name} pending" style="font-size:13px;opacity:0.35;">${p.emoji}</span>`).join('');
+      timeLabel=`<span style="display:flex;align-items:center;gap:4px;">${dots}<span style="color:var(--pink-deep);font-size:9px;margin-left:4px;">closes ${formatMsCountdown(msLeft)}</span></span>`;
+    } else {
+      // Check if all answered in this past window
+      const allDone=PLAYERS.every(p=>hasPlayerAnsweredInWindow(p.name,w.id));
+      if(allDone){
+        timeLabel='<span style="color:#55c47a;font-size:10px;">✓ All answered</span>';
+      } else {
+        let openTime=new Date();openTime.setHours(w.hour,0,0,0);
+        if(openTime<=now) openTime.setDate(openTime.getDate()+1);
+        timeLabel=`<span style="color:var(--text-soft);font-size:10px;">in ${formatMsCountdown(openTime-now)}</span>`;
+      }
+    }
+    el.innerHTML=`<span>${w.icon} ${w.label}</span>${timeLabel}`;
+  });
+}
+
+// --- Itinerary & Maps ----------------------------------------------------
+function mapsUrl(q){return'https://maps.apple.com/?q='+encodeURIComponent(q)+'&dirflg=d';}
+const MAPS_URLS={
+  "Magic Kingdom Park":mapsUrl("Magic Kingdom Park Walt Disney World"),
+  "EPCOT":mapsUrl("EPCOT Walt Disney World Orlando"),
+  "Disney Springs":mapsUrl("Disney Springs Orlando FL"),
+  "Disney's Hollywood Studios":mapsUrl("Hollywood Studios Walt Disney World"),
+  "Disney's Animal Kingdom":mapsUrl("Animal Kingdom Walt Disney World"),
+  "'Ohana Dinner":mapsUrl("'Ohana Restaurant Polynesian Village Resort Walt Disney World"),
+  "The Beak and Barrel Lunch":mapsUrl("Beak and Barrel Magic Kingdom Walt Disney World"),
+  "Via Napoli Ristorante e Pizzeria Lunch":mapsUrl("Via Napoli Ristorante EPCOT Walt Disney World"),
+  "Morimoto Asia Dinner":mapsUrl("Morimoto Asia Disney Springs Orlando"),
+  "Beaches & Cream Soda Shop":mapsUrl("Beaches and Cream Soda Shop Beach Club Resort Disney"),
+  "Oga's Cantina Lunch":mapsUrl("Oga's Cantina Hollywood Studios Walt Disney World"),
+  "Sci-Fi Dine-In Theater Dinner · 1st Show":mapsUrl("Sci-Fi Dine-In Theater Hollywood Studios Walt Disney World"),
+  "La Crêperie de Paris Dinner":mapsUrl("La Creperie de Paris EPCOT France Pavilion"),
+  "Yak & Yeti Restaurant Lunch":mapsUrl("Yak and Yeti Restaurant Animal Kingdom Disney"),
+  "Chef Art Smith's Homecomin' Dinner":mapsUrl("Homecomin Chef Art Smith Disney Springs"),
+  "Be Our Guest Dinner":mapsUrl("Be Our Guest Restaurant Magic Kingdom Walt Disney World"),
+  "The Cake Bake Restaurant":mapsUrl("The Cake Bake Restaurant Disney Springs"),
+  "Check In — Disney's Polynesian Village Resort":mapsUrl("Disney Polynesian Village Resort Walt Disney World"),
+};
+
+// Reservations stored per day index in localStorage
+function getReservations(dayIdx){
+  try{return JSON.parse(localStorage.getItem('disney_res_'+dayIdx)||'[]');}catch{return [];}
+}
+function saveReservations(dayIdx,arr){localStorage.setItem('disney_res_'+dayIdx,JSON.stringify(arr));}
+
+let currentResDay=null;
+window.openResModal=function(dayIdx){
+  currentResDay=dayIdx;
+  document.getElementById('res-time-input').value='';
+  document.getElementById('res-note-input').value='';
+  document.getElementById('res-modal-backdrop').classList.remove('hidden');
+};
+window.closeResModal=function(){document.getElementById('res-modal-backdrop').classList.add('hidden');};
+window.saveReservation=function(){
+  const time=document.getElementById('res-time-input').value;
+  const note=document.getElementById('res-note-input').value.trim();
+  if(!note)return;
+  const arr=getReservations(currentResDay);
+  arr.push({time,note,id:Date.now()});
+  arr.sort((a,b)=>a.time.localeCompare(b.time));
+  saveReservations(currentResDay,arr);
+  closeResModal();
+  buildItinerary();
+};
+window.deleteReservation=function(dayIdx,resId){
+  const arr=getReservations(dayIdx).filter(r=>r.id!==resId);
+  saveReservations(dayIdx,arr);
+  buildItinerary();
+};
+
+const ITINERARY=[
+  {date:'Wed, May 27',label:'Arrival Day ✈️',icon:'✈️',color:'rgba(100,200,255,0.15)',events:[
+    {icon:'✈️',name:'Fly Dallas → Orlando',time:'Departs DAL 2:20 PM · Arrives MCO 5:55 PM',detail:'Southwest WN578 · Seat 19D Aisle',type:'flight'},
+    {icon:'🏨',name:"Check In — Disney's Polynesian Village Resort",time:'Evening',detail:'Walt Disney World Swan Hotel stay begins'},
+    {icon:'🍽️',name:"'Ohana Dinner",time:'9:00 PM',detail:"Disney's Polynesian Village Resort",type:'highlight'},
+  ]},
+  {date:'Thu, May 28',label:'Magic Kingdom 🏰',icon:'🏰',color:'rgba(214,51,132,0.1)',events:[
+    {icon:'🏰',name:'Magic Kingdom Park',time:'9:00 AM – 10:00 PM',detail:''},
+    {icon:'🍽️',name:'The Beak and Barrel Lunch',time:'3:20 PM',detail:'Table Service · Magic Kingdom',type:'highlight'},
+  ]},
+  {date:'Fri, May 29',label:'EPCOT 🌐',icon:'🌐',color:'rgba(160,120,255,0.1)',events:[
+    {icon:'🌐',name:'EPCOT',time:'9:00 AM – 9:00 PM',detail:''},
+    {icon:'🍽️',name:'Via Napoli Ristorante e Pizzeria Lunch',time:'3:45 PM',detail:'Table Service · EPCOT Italy Pavilion',type:'highlight'},
+  ]},
+  {date:'Sat, May 30',label:'Disney Springs 🎡',icon:'🎡',color:'rgba(85,239,196,0.08)',events:[
+    {icon:'🎡',name:'Disney Springs',time:'10:00 AM – 11:30 PM',detail:'Shopping, dining & entertainment'},
+    {icon:'🍽️',name:'Morimoto Asia Dinner',time:'4:35 PM',detail:'Table Service · Disney Springs',type:'highlight'},
+    {icon:'🍦',name:"Beaches & Cream Soda Shop",time:'Evening',detail:"Disney's Beach Club Resort",type:'highlight'},
+  ]},
+  {date:'Sun, May 31',label:'Hollywood Studios 🎬',icon:'🎬',color:'rgba(255,150,50,0.08)',events:[
+    {icon:'🎬',name:"Disney's Hollywood Studios",time:'9:00 AM – 9:00 PM',detail:''},
+    {icon:'🍽️',name:"Oga's Cantina Lunch",time:'12:15 PM',detail:"Table Service · Galaxy's Edge",type:'highlight'},
+    {icon:'🎥',name:'Sci-Fi Dine-In Theater Dinner · 1st Show',time:'4:45 PM',detail:'Table Service · Hollywood Studios',type:'highlight'},
+  ]},
+  {date:'Mon, Jun 1',label:'EPCOT 🌐',icon:'🌐',color:'rgba(160,120,255,0.1)',events:[
+    {icon:'🌐',name:'EPCOT',time:'9:00 AM – 9:00 PM',detail:''},
+    {icon:'🍽️',name:'La Crêperie de Paris Dinner',time:'5:00 PM',detail:'Table Service · EPCOT France Pavilion',type:'highlight'},
+  ]},
+  {date:'Tue, Jun 2',label:'Animal Kingdom & Disney Springs 🦁',icon:'🦁',color:'rgba(100,200,100,0.08)',events:[
+    {icon:'🦁',name:"Disney's Animal Kingdom",time:'8:00 AM – 6:00 PM',detail:''},
+    {icon:'🍽️',name:'Yak & Yeti Restaurant Lunch',time:'2:00 PM',detail:'Table Service · Animal Kingdom',type:'highlight'},
+    {icon:'🎡',name:'Disney Springs',time:'10:00 AM – 11:00 PM',detail:'Evening shopping & dining'},
+    {icon:'🍽️',name:"Chef Art Smith's Homecomin' Dinner",time:'Evening',detail:'Table Service · Disney Springs',type:'highlight'},
+  ]},
+  {date:'Wed, Jun 3',label:'Magic Kingdom 🏰',icon:'🏰',color:'rgba(214,51,132,0.1)',events:[
+    {icon:'🏰',name:'Magic Kingdom Park',time:'9:00 AM – 10:00 PM',detail:''},
+    {icon:'🍽️',name:'Be Our Guest Dinner',time:'4:00 PM',detail:"Table Service · Beast's Castle · Magic Kingdom",type:'highlight'},
+  ]},
+  {date:'Thu, Jun 4',label:'Fly Home ✈️',icon:'✈️',color:'rgba(100,200,255,0.1)',events:[
+    {icon:'🎂',name:'The Cake Bake Restaurant',time:'2:00 PM',detail:'Final Disney meal!',type:'highlight'},
+    {icon:'✈️',name:'Fly Orlando → Dallas',time:'Departs MCO 7:35 PM · Arrives DAL 9:20 PM',detail:'Southwest Flight 1419 · Seat 22A Window · Nonstop',type:'flight'},
+  ]},
+];
+
+function buildItinerary(){
+  const container=document.getElementById('itin-days');container.innerHTML='';
+  const today=new Date();today.setHours(0,0,0,0);
+  ITINERARY.forEach((day,dayIdx)=>{
+    const dateWords=day.date.replace(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s*/,'');
+    const dayDate=new Date(dateWords+' 2026');dayDate.setHours(0,0,0,0);
+    const isToday=dayDate.getTime()===today.getTime();
+    const isPast=dayDate<today;
+    const div=document.createElement('div');div.className='itin-day';
+    if(isPast)div.style.opacity='0.45';
+
+    let eventsHtml=day.events.map(e=>{
+      const mapsUrl=MAPS_URLS[e.name];
+      const mapsBtn=mapsUrl?`<a class="maps-link" href="${mapsUrl}" target="_blank" rel="noopener">📍 Open in Maps</a>`:'';
+      return `<div class="itin-event${e.type==='highlight'?' highlight':e.type==='flight'?' flight':''}">
+        <span class="itin-event-icon">${e.icon}</span>
+        <div class="itin-event-body">
+          <div class="itin-event-name">${e.name}</div>
+          ${e.time?`<div class="itin-event-time">${e.time}</div>`:''}
+          ${e.detail?`<div class="itin-event-detail">${e.detail}</div>`:''}
+          ${mapsBtn}
+        </div>
+      </div>`;}).join('');
+
+    // Reservations for this day
+    const reservations=getReservations(dayIdx);
+    const resHtml=reservations.map(r=>`
+      <div class="res-item">
+        <span class="res-time">${r.time||'–'}</span>
+        <span class="res-note">${r.note}</span>
+        <button class="res-delete" onclick="deleteReservation(${dayIdx},${r.id})" title="Remove">✕</button>
+      </div>`).join('');
+
+    div.innerHTML=`
+      <div class="itin-day-header">
+        <div class="itin-day-dot" style="background:${day.color};border:1px solid var(--border);">${day.icon}</div>
+        <div class="itin-day-info">
+          <div class="itin-day-date">${day.date}</div>
+          <div class="itin-day-park">${day.label}</div>
+        </div>
+        ${isToday?'<span class="itin-today-badge">TODAY</span>':''}
+      </div>
+      ${eventsHtml}
+      ${resHtml}
+      <button class="add-res-btn" onclick="openResModal(${dayIdx})">+ Add Reservation</button>
+      <div class="itin-hotel"><span class="itin-hotel-icon">🛏️</span><span class="itin-hotel-name">Walt Disney World Swan Hotel</span></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+window.openItinerary=function(){buildItinerary();document.getElementById('overlay').classList.remove('hidden');showScreen('itinerary');};
+window.openWeather=function(){if(!weatherUnlocked)return;document.getElementById('overlay').classList.remove('hidden');showScreen('weather');loadWeather();};
+window.openMaps=function(){if(!mapsUnlocked)return;document.getElementById('overlay').classList.remove('hidden');showScreen('maps');};
+
+// --- Firebase config ------------------------------------------------------
+const FB_BASE='https://disneycountdown-f98f1-default-rtdb.firebaseio.com';
+const FB_SCORES=FB_BASE+'/scores.json';
+const FB_ANSWERED=FB_BASE+'/answered.json';
+const FB_QUESTION=FB_BASE+'/currentQuestion.json';
+
+let scores={};PLAYERS.forEach(p=>scores[p.name]=0);
+let liveAnswered={};   // {windowKey: {playerName: true}}
+let lastScoreHash='';
+let lastAnsweredHash='';
+let lastQuestionHash='';
+
+function syncStatus(msg){const el=document.getElementById('lb-sync');if(el)el.textContent=msg;}
+
+// --- Scores ---------------------------------------------------------------
+async function loadScoresFromStorage(){
+  try{
+    const res=await fetch(FB_SCORES);
+    if(!res.ok)throw new Error();
+    const data=await res.json();
+    if(data){
+      const hash=JSON.stringify(data);
+      if(hash!==lastScoreHash){
+        lastScoreHash=hash;
+        PLAYERS.forEach(p=>{if(typeof data[p.name]==='number')scores[p.name]=data[p.name];});
+        renderLeaderboard();
+      }
+    }
+    syncStatus('🔴 Live · '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit'}));
+  }catch(e){
+    try{const local=JSON.parse(localStorage.getItem('disney_scores_local')||'{}');PLAYERS.forEach(p=>{if(typeof local[p.name]==='number')scores[p.name]=local[p.name];});renderLeaderboard();}catch{}
+    syncStatus('⚡ Offline · local mode');
+  }
+}
+
+async function saveScoresToStorage(){
+  try{
+    await fetch(FB_SCORES,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(scores)});
+    lastScoreHash=JSON.stringify(scores);
+    try{localStorage.setItem('disney_scores_local',JSON.stringify(scores));}catch{}
+    syncStatus('🔴 Live · synced '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit'}));
+  }catch(e){
+    try{localStorage.setItem('disney_scores_local',JSON.stringify(scores));}catch{}
+    syncStatus('⚡ Offline · saved locally');
+  }
+}
+
+// --- Live "who answered" tracking ----------------------------------------
+function getWindowKey(){
+  const cw=getCurrentWindow();
+  if(!cw)return null;
+  const d=new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}-${cw.id}`;
+}
+
+async function loadAnsweredFromFirebase(){
+  try{
+    const res=await fetch(FB_ANSWERED);
+    if(!res.ok)throw new Error();
+    const data=await res.json();
+    const hash=JSON.stringify(data);
+    if(hash!==lastAnsweredHash){
+      lastAnsweredHash=hash;
+      liveAnswered=data||{};
+      // If player select screen is open, refresh it live
+      const selScreen=document.getElementById('screen-select');
+      if(selScreen&&!selScreen.classList.contains('hidden'))buildPlayerSelect();
+      // If locked screen is open, refresh it
+      const lockScreen=document.getElementById('screen-locked');
+      if(lockScreen&&!lockScreen.classList.contains('hidden'))updateLockedScreen();
+    }
+  }catch(e){}
+}
+
+async function markPlayerAnsweredFirebase(playerName){
+  const wk=getWindowKey();
+  if(!wk)return;
+  try{
+    // PATCH just this player's entry
+    const url=`${FB_BASE}/answered/${wk}/${playerName}.json`;
+    await fetch(url,{method:'PUT',headers:{'Content-Type':'application/json'},body:'true'});
+    if(!liveAnswered[wk])liveAnswered[wk]={};
+    liveAnswered[wk][playerName]=true;
+    lastAnsweredHash=JSON.stringify(liveAnswered);
+  }catch(e){
+    // fallback to localStorage
+    markPlayerAnsweredInWindow(playerName,getCurrentWindow()?.id||'');
+  }
+}
+
+function hasPlayerAnsweredLive(playerName){
+  // Check Firebase live data first, fall back to localStorage
+  const wk=getWindowKey();
+  if(wk&&liveAnswered[wk]&&liveAnswered[wk][playerName])return true;
+  const cw=getCurrentWindow();
+  if(cw)return hasPlayerAnsweredInWindow(playerName,cw.id);
+  return false;
+}
+
+// --- Live current question tracking --------------------------------------
+let currentLiveQuestion=null;
+
+async function loadCurrentQuestion(){
+  try{
+    const res=await fetch(FB_QUESTION);
+    if(!res.ok)throw new Error();
+    const data=await res.json();
+    const hash=JSON.stringify(data);
+    if(hash!==lastQuestionHash){
+      lastQuestionHash=hash;
+      currentLiveQuestion=data;
+    }
+  }catch(e){}
+}
+
+async function saveCurrentQuestion(qIdx){
+  const wk=getWindowKey();
+  if(!wk)return;
+  try{
+    await fetch(FB_QUESTION,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({idx:qIdx,windowKey:wk})});
+    currentLiveQuestion={idx:qIdx,windowKey:wk};
+    lastQuestionHash=JSON.stringify(currentLiveQuestion);
+  }catch(e){}
+}
+
+// --- Poll Firebase every 8 seconds ---------------------------------------
+async function pollFirebase(){
+  await Promise.all([loadScoresFromStorage(),loadAnsweredFromFirebase(),loadCurrentQuestion()]);
+}
+pollFirebase();
+setInterval(pollFirebase,8000);
+
+const rankLabels=['👑','🥈','🥉'];
+function renderLeaderboard(){
+  const lb=document.getElementById('leaderboard');lb.innerHTML='';
+  const sorted=PLAYERS.slice().sort((a,b)=>scores[b.name]!==scores[a.name]?scores[b.name]-scores[a.name]:a.name.localeCompare(b.name));
+  const rowCls=['first','second','third'],rankCls=['r1','r2','r3'];
+  sorted.forEach((p,i)=>{const hasPoints=scores[p.name]>0;const row=document.createElement('div');row.className='lb-row'+(hasPoints&&i<3?' '+rowCls[i]:'')+(scores[p.name]===0?' lb-zero':'');row.innerHTML=`<span class="lb-rank ${hasPoints&&i<3?rankCls[i]:'r0'}">${hasPoints&&i<3?rankLabels[i]:i+1}</span><span class="lb-emoji">${p.emoji}</span><span class="lb-name">${p.name}</span><span class="lb-pts">${scores[p.name]}</span><span class="lb-pts-label">pts</span>`;lb.appendChild(row);});
+}
+renderLeaderboard();
+
+// --- Trivia game ----------------------------------------------------------
+const hardTrivia=[
+  {q:"What was Walt Disney's very first cartoon character before Mickey Mouse?",choices:["Donald Duck","Oswald the Lucky Rabbit","Clarabelle Cow","Goofy"],ans:2},
+  {q:"In which year did Disneyland first open its doors to the public?",choices:["1953","1955","1957","1960"],ans:2},
+  {q:"What is the name of the sorcerer whose hat Mickey wears in Fantasia?",choices:["Merlin","Yen Sid","Aldric","Gandalf"],ans:2},
+  {q:"In Sleeping Beauty, what are the names of all three good fairies?",choices:["Flora, Fauna & Merryweather","Rose, Lily & Violet","Hope, Grace & Joy","Dawn, Dusk & Twilight"],ans:1},
+  {q:"In which Pixar film does a character say 'You are a sad, strange little man'?",choices:["Monsters Inc.","Toy Story","A Bug's Life","The Incredibles"],ans:2},
+  {q:"What species of bear is Baloo in The Jungle Book?",choices:["Polar bear","Grizzly bear","Sloth bear","Sun bear"],ans:3},
+  {q:"In Lilo & Stitch, what is Stitch's experiment number?",choices:["624","626","628","636"],ans:2},
+  {q:"What is the name of the villain in The Great Mouse Detective?",choices:["Ratigan","Rattus","Mordecai","Whiskers"],ans:1},
+  {q:"Which Disney princess has the fewest lines of dialogue in her own film?",choices:["Merida","Aurora","Snow White","Cinderella"],ans:2},
+  {q:"In Beauty and the Beast, what household object is Lumiere?",choices:["A clock","A teapot","A candelabra","A wardrobe"],ans:3},
+  {q:"What is the name of Flynn Rider's real identity in Tangled?",choices:["Eugene Fitzherbert","Edmund Flynn","Evan Rider","Ernest Fitch"],ans:1},
+  {q:"In Ratatouille, what is Chef Gusteau's famous motto?",choices:["Cook with passion","Anyone can cook","Food is love","Follow your heart"],ans:2},
+  {q:"What is the name of Woody's horse in Toy Story 2?",choices:["Bullseye","Trigger","Dusty","Copper"],ans:1},
+  {q:"In Encanto, what is the name of the magical house?",choices:["La Casa","Casita","El Hogar","Mi Casa"],ans:2},
+  {q:"In Brave, which clan does Merida belong to?",choices:["Clan MacGuffin","Clan Dingwall","Clan DunBroch","Clan MacIntosh"],ans:3},
+  {q:"In Aladdin, what is the name of Jafar's parrot?",choices:["Iago","Pico","Squawks","Zazu"],ans:1},
+  {q:"In The Lion King, what is the forbidden place Simba is warned never to visit?",choices:["The Shadowlands","The Elephant Graveyard","The Dark Savanna","The Outlands"],ans:2},
+  {q:"Which Disney film features the song 'Everybody Wants to Be a Cat'?",choices:["Oliver & Company","The Aristocats","Lady and the Tramp","Bolt"],ans:2},
+  {q:"In which Disney film does Figaro the kitten first appear?",choices:["The Aristocats","Cinderella","Pinocchio","Bambi"],ans:3},
+  {q:"What is the name of the kingdom in Frozen?",choices:["Arendelle","Elysium","Valdor","Northheim"],ans:1},
+  {q:"In Coco, what is the full name of the musician Miguel idolizes?",choices:["Ernesto de la Cruz","Eduardo de la Cruz","Ernesto Villa","Eduardo Garcia"],ans:1},
+  {q:"In Up, how many balloons did Pixar estimate it would take to lift Carl's house?",choices:["999,999","9.4 million","26.9 million","100 million"],ans:3},
+  {q:"What classical piece plays during the Sorcerer's Apprentice in Fantasia?",choices:["Beethoven's 5th","Dukas' The Sorcerer's Apprentice","Bach's Toccata","Strauss' Blue Danube"],ans:2},
+  {q:"In The Little Mermaid, how many sisters does Ariel have?",choices:["Five","Six","Seven","Eight"],ans:2},
+  {q:"What is the real name of the Beast in Beauty and the Beast?",choices:["Henry","Adam","Charles","Edward"],ans:2},
+  {q:"What do the monsters in Monsters Inc. use children's screams for?",choices:["Entertainment","Power the city","Communication","Defense"],ans:2},
+  {q:"Which culture most inspired the story of Moana?",choices:["Hawaiian","Maori New Zealand","Polynesian Pacific Islands","Fijian"],ans:3},
+  {q:"In The Incredibles, what is Mr. Incredible's real name?",choices:["Brad Bird","Robert Parr","Bob Parr","Bruce Parr"],ans:3},
+  {q:"What is the name of the chef rat in Ratatouille?",choices:["Emile","Django","Remy","Gusteau"],ans:3},
+  {q:"In Tangled, how many years was Rapunzel locked in the tower?",choices:["15","16","17","18"],ans:4},
+  {q:"What is the name of Scar's lead hyena henchwoman?",choices:["Ed","Banzai","Shenzi","Kamari"],ans:3},
+  {q:"In Mulan, what is the name of Mulan's horse?",choices:["Samson","Philippe","Khan","Bullseye"],ans:3},
+  {q:"What does EPCOT's Spaceship Earth thematically represent?",choices:["A golf ball","The Earth","A network of human communication through history","A geodesic experiment"],ans:3},
+  {q:"In Hercules, who is Hercules's father on Mount Olympus?",choices:["Poseidon","Ares","Zeus","Apollo"],ans:3},
+  {q:"In The Princess and the Frog, what is the name of Tiana's restaurant?",choices:["Tiana's Palace","Tiana's Place","The Bayou Bistro","Naveen's Kitchen"],ans:1},
+  {q:"In Big Hero 6, what city is the story set in?",choices:["New Tokyo","San Fransokyo","Neo Tokyo","San Franjose"],ans:2},
+  {q:"What is the name of the island Moana is forbidden to sail past the reef from?",choices:["Motunui","Lalotai","Te Fiti","Maui"],ans:1},
+  {q:"In Pinocchio, what is the name of the whale that swallows Geppetto?",choices:["Monstro","Moby","Leviathan","Whaleo"],ans:1},
+  {q:"What is the name of the toy store owner in Toy Story 2 who collects Woody memorabilia?",choices:["Stinky Pete","Al McWhiggin","The Prospector","Woody's Roundup"],ans:2},
+  {q:"Oliver & Company is loosely based on which Charles Dickens novel?",choices:["Great Expectations","A Tale of Two Cities","Oliver Twist","David Copperfield"],ans:3},
+  {q:"What is the full name of the villain in 101 Dalmatians?",choices:["Cruella De Vil","Cruella D'Evil","Cruella Devil","Cruella Du Val"],ans:1},
+  {q:"In The Emperor's New Groove, what does Kuzco get turned into?",choices:["A frog","A llama","A pig","A goat"],ans:2},
+  {q:"What is the name of Cinderella's horse?",choices:["Samson","Major","Philippe","Buttercup"],ans:2},
+  {q:"In Soul, what is the name of the realm where souls develop personalities before birth?",choices:["The Before","The Great Beyond","The Great Before","The Soul World"],ans:3},
+  {q:"In Treasure Planet, the story adapts which classic novel?",choices:["Robinson Crusoe","Treasure Island","20,000 Leagues","Swiss Family Robinson"],ans:2},
+  {q:"In Frozen 2, what is the name of the enchanted forest Elsa and Anna travel to?",choices:["Arendelle","The Enchanted Forest","Northuldra","The Dark Sea"],ans:3},
+  {q:"In Snow White, what does the Evil Queen disguise herself as?",choices:["A beggar","An old woman","A peasant","A witch"],ans:2},
+  {q:"What is the name of the toy store in Toy Story 2?",choices:["Al's Toy Barn","Big Toy World","Woody's Roundup","Play Palace"],ans:1},
+  {q:"In Finding Nemo, what do the fish in the dentist tank call themselves?",choices:["The Fish Tank Gang","The Tank Squad","P. Sherman's Fish","The Tank"],ans:1},
+  {q:"In Atlantis: The Lost Empire, what is the name of the Atlantean princess?",choices:["Kida","Milo","Helga","Audrey"],ans:1},
+  {q:"In Tarzan, who performed the original soundtrack?",choices:["Elton John","Hans Zimmer","Phil Collins","Randy Newman"],ans:3},
+  {q:"What is the name of the rabbit in Bambi?",choices:["Flower","Thumper","Hopsy","Cotton"],ans:2},
+  {q:"In The Sword in the Stone, what is the name of Merlin's pet owl?",choices:["Archimedes","Aristotle","Socrates","Plato"],ans:1},
+];
+
+let usedQIndices=[];
+function getNextQ(){if(usedQIndices.length>=hardTrivia.length)usedQIndices=[];const rem=hardTrivia.map((_,i)=>i).filter(i=>!usedQIndices.includes(i));const idx=rem[Math.floor(Math.random()*rem.length)];usedQIndices.push(idx);return idx;}
+
+function buildPlayerSelect(){
+  const grid=document.getElementById('player-grid');grid.innerHTML='';activePlayers=[];
+  // Status header
+  const pending=PLAYERS.filter(p=>!hasPlayerAnsweredLive(p.name));
+  const statusDiv=document.createElement('div');
+  statusDiv.style.cssText='font-size:11px;color:var(--text-soft);text-align:center;margin-bottom:12px;letter-spacing:1px;width:100%;';
+  if(pending.length===0){
+    statusDiv.innerHTML='<span style="color:#55c47a;font-weight:700;">✓ Everyone has answered this window!</span>';
+  } else {
+    statusDiv.textContent=pending.length+' player'+(pending.length!==1?'s':'')+' still to answer';
+  }
+  grid.appendChild(statusDiv);
+  PLAYERS.forEach(p=>{
+    const alreadyAnswered=hasPlayerAnsweredLive(p.name);
+    const btn=document.createElement('button');
+    btn.className='player-btn'+(alreadyAnswered?' answered-player':'');
+    btn.innerHTML='<span class="player-emoji">'+p.emoji+'</span>'+p.name+(alreadyAnswered?'<span style="font-size:10px;color:#55c47a;display:block;margin-top:2px;">✓ answered</span>':'');
+    if(alreadyAnswered){
+      btn.disabled=true;
+      btn.style.cssText='opacity:0.4;cursor:default;background:rgba(85,196,122,0.08);border-color:rgba(85,196,122,0.3);';
+      btn.title='Already answered this window';
+    } else {
+      btn.onclick=function(){
+        btn.classList.toggle('selected');
+        if(btn.classList.contains('selected')){if(!activePlayers.includes(p.name))activePlayers.push(p.name);}
+        else{activePlayers=activePlayers.filter(n=>n!==p.name);}
+        document.getElementById('start-game-btn').disabled=activePlayers.length<1;
+      };
+    }
+    grid.appendChild(btn);
+  });
+}
+
+let currentWindowForGame=null;
+window.startGame=async function(){
+  answered=false;selectedAnswerer=null;
+  currentWindowForGame=getCurrentWindow();
+  // Use the same question for everyone in this window (stored in Firebase)
+  let qIdx;
+  const wk=getWindowKey();
+  if(currentLiveQuestion&&currentLiveQuestion.windowKey===wk&&typeof currentLiveQuestion.idx==='number'){
+    // Use the already-assigned question for this window
+    qIdx=currentLiveQuestion.idx;
+  } else {
+    // First person to open — pick a question and save it for everyone
+    qIdx=getNextQ();
+    await saveCurrentQuestion(qIdx);
+  }
+  showScreen('question');
+  renderQuestion(hardTrivia[qIdx]);
+};
+
+function startReturnCountdown(){
+  const msgEl=document.getElementById('returning-msg'),countEl=document.getElementById('return-count');
+  msgEl.classList.remove('hidden');let count=3;countEl.textContent=count;
+  returnTimer=setInterval(()=>{count--;if(count<=0){clearInterval(returnTimer);closeOverlay();}else countEl.textContent=count;},1000);
+}
+
+function renderQuestion(q){
+  document.getElementById('trivia-q').textContent=q.q;
+  document.getElementById('trivia-feedback').textContent='';
+  document.getElementById('trivia-feedback').className='trivia-feedback';
+  document.getElementById('returning-msg').classList.add('hidden');
+  const ar=document.getElementById('answerer-row');ar.innerHTML='';
+  activePlayers.forEach(name=>{const p=PLAYERS.find(p=>p.name===name);const chip=document.createElement('button');chip.className='answerer-chip';chip.textContent=p.emoji+' '+name;chip.onclick=function(){if(answered)return;selectedAnswerer=name;document.querySelectorAll('.answerer-chip').forEach(c=>c.classList.remove('active'));chip.classList.add('active');};ar.appendChild(chip);});
+  const choicesEl=document.getElementById('trivia-choices');choicesEl.innerHTML='';
+  q.choices.forEach((text,i)=>{const btn=document.createElement('button');btn.className='choice-btn';btn.textContent=text;btn.onclick=async function(){
+    if(answered)return;
+    if(!selectedAnswerer){document.getElementById('trivia-feedback').textContent='Choose who is answering first!';document.getElementById('trivia-feedback').className='trivia-feedback bad';return;}
+    answered=true;
+    // Mark answered: locally (instant), Firebase (live for others), personal device (button goes grey)
+    if(currentWindowForGame&&selectedAnswerer){
+      markPlayerAnsweredInWindow(selectedAnswerer,currentWindowForGame.id); // localStorage fallback
+      markPlayerAnsweredFirebase(selectedAnswerer); // Firebase — updates others' phones
+      markMyselfAnswered(); // personal device — my button goes grey instantly
+      // Immediately update liveAnswered locally so player select refreshes right away
+      const wk=getWindowKey();
+      if(wk){
+        if(!liveAnswered[wk])liveAnswered[wk]={};
+        liveAnswered[wk][selectedAnswerer]=true;
+        lastAnsweredHash=JSON.stringify(liveAnswered);
+      }
+    }
+    const isCorrect=(i+1)===q.ans;
+    document.querySelectorAll('.choice-btn').forEach((b,bi)=>{if((bi+1)===q.ans)b.classList.add('correct');else if(b===btn&&!isCorrect)b.classList.add('wrong');b.disabled=true;});
+    const fb=document.getElementById('trivia-feedback');
+    if(isCorrect){
+      scores[selectedAnswerer]=(scores[selectedAnswerer]||0)+1;
+      renderLeaderboard();
+      await saveScoresToStorage();
+      setTimeout(()=>pollFirebase(),500); // immediate refresh so others see score update
+      fb.textContent=`🎉 Correct! +1 point for ${selectedAnswerer}!`;fb.className='trivia-feedback good';spawnPixie();launchFireworks(8);
+    }else{fb.textContent=`✗ The answer was: ${q.choices[q.ans-1]}`;fb.className='trivia-feedback bad';}
+    // Still poll immediately so others see this person has answered
+    setTimeout(()=>pollFirebase(),500);
+    startReturnCountdown();
+  };choicesEl.appendChild(btn);});
+}
+
+function openWinner(){document.getElementById('overlay').classList.remove('hidden');showScreen('winner');const sorted=PLAYERS.slice().sort((a,b)=>scores[b.name]-scores[a.name]);const winner=sorted[0];const treats=['a Mickey bar 🍫','a Dole Whip 🍍','a churro 🥐','Mickey Mouse ice cream 🍦','a special Disney dessert 🧁','a Mickey pretzel 🥨'];const treat=treats[Math.floor(Math.random()*treats.length)];const wrap=document.getElementById('winner-wrap');const rowsHtml=sorted.map((p,i)=>`<div class="final-score-row${i===0?' gold':''}"><span class="final-name">${p.emoji} ${p.name}${i===0?' 👑':''}</span><span class="final-pts">${scores[p.name]} pts</span></div>`).join('');wrap.innerHTML=`<span class="winner-crown">👑</span><div class="winner-name">${winner.emoji} ${winner.name} Wins!</div><p class="winner-treat">The magic has arrived — and so has your sweet treat!<br><br><strong style="color:var(--pink-deep);font-size:16px;">${winner.name} wins ${treat}!</strong><br><br>Congratulations, Disney trivia champion! 🏰✨</p><div class="final-scores">${rowsHtml}</div>`;launchFireworks(40);}
+
+// --- Weather --------------------------------------------------------------
+function getWeatherIcon(code){if(code===0)return '☀️';if(code<=2)return '⛅';if(code<=3)return '☁️';if(code<=48)return '🌫️';if(code<=67)return '🌧️';if(code<=77)return '🌨️';if(code<=82)return '🌦️';if(code<=99)return '⛈️';return '🌡️';}
+function getParkRating(hi,rain){if(rain>60||hi>98)return{text:'Rough day 😓',cls:'rating-rough'};if(rain>40||hi>95)return{text:'Bring a poncho 🌂',cls:'rating-ok'};if(rain>20||hi>90)return{text:'Good park day 😊',cls:'rating-good'};return{text:'Great park day! 🎉',cls:'rating-great'};}
+let weatherLoaded=false,weatherUnlocked=false;
+let mapsUnlocked=false;
+function loadWeather(){if(weatherLoaded)return;const wc=document.getElementById('weather-content');wc.innerHTML='<div class="weather-loading">✨ Fetching Orlando forecast...</div>';fetch('https://api.open-meteo.com/v1/forecast?latitude=28.3772&longitude=-81.5707&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=America%2FNew_York&start_date=2026-05-27&end_date=2026-06-04&forecast_days=16').then(r=>r.json()).then(data=>{weatherLoaded=true;const{daily}=data;const days=daily.time;const dayN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],monN=['Jan','Feb','Mar','Apr','May','Jun'];let html='<div class="weather-grid">';days.forEach((dateStr,i)=>{const d=new Date(dateStr+'T12:00:00');const icon=getWeatherIcon(daily.weathercode[i]);const hi=Math.round(daily.temperature_2m_max[i]),lo=Math.round(daily.temperature_2m_min[i]),rain=daily.precipitation_probability_max[i]||0;const rating=getParkRating(hi,rain);html+=`<div class="weather-card"><div class="weather-date">${dayN[d.getDay()]} ${monN[d.getMonth()]} ${d.getDate()}</div><span class="weather-icon">${icon}</span><div class="weather-temp">${hi}° / ${lo}°F</div><div class="weather-rain">💧 ${rain}% rain</div><div class="park-rating ${rating.cls}">${rating.text}</div></div>`;});html+='</div><div style="font-size:10px;color:var(--text-soft);font-family:sans-serif;text-align:center;margin-top:8px;">📡 Open-Meteo · Orlando, FL</div>';wc.innerHTML=html;}).catch(()=>{wc.innerHTML=`<div class="weather-loading">Couldn't load forecast. <a href="https://weather.com/weather/tenday/l/Orlando+FL" target="_blank" style="color:var(--pink-deep);">Try weather.com</a></div>`;});}
+
+// --- Quotes ---------------------------------------------------------------
+const quotes=[
+  {text:"All our dreams can come true, if we have the courage to pursue them.",char:"— Walt Disney"},
+  {text:"The flower that blooms in adversity is the most rare and beautiful of all.",char:"— The Emperor, Mulan"},
+  {text:"Just keep swimming.",char:"— Dory, Finding Nemo"},
+  {text:"Oh yes, the past can hurt. But the way I see it, you can either run from it or learn from it.",char:"— Rafiki, The Lion King"},
+  {text:"To infinity and beyond!",char:"— Buzz Lightyear, Toy Story"},
+  {text:"Adventure is out there!",char:"— Ellie, Up"},
+  {text:"Even miracles take a little time.",char:"— Fairy Godmother, Cinderella"},
+  {text:"You're braver than you believe, and stronger than you seem, and smarter than you think.",char:"— Christopher Robin"},
+  {text:"A dream is a wish your heart makes.",char:"— Cinderella"},
+  {text:"If you can dream it, you can do it.",char:"— Walt Disney"},
+  {text:"Sometimes the right path is not the easiest one.",char:"— Grandmother Willow, Pocahontas"},
+  {text:"Hakuna Matata — it means no worries for the rest of your days.",char:"— Timon & Pumbaa"},
+  {text:"The seaweed is always greener in somebody else's lake.",char:"— Sebastian, The Little Mermaid"},
+  {text:"Remember you're the one who can fill the world with sunshine.",char:"— Snow White"},
+  {text:"I was hiding under your porch because I love you.",char:"— Dug, Up"},
+  {text:"Oh yes, the past can hurt. But you can either run from it or learn from it.",char:"— Rafiki, The Lion King"},
+  {text:"The problem is not the problem. The problem is your attitude about the problem.",char:"— Captain Jack Sparrow, Pirates of the Caribbean"},
+  {text:"Even if we're apart, I'll always be with you.",char:"— Mufasa, The Lion King"},
+  {text:"This is the night, and the night is young.",char:"— Sebastian, The Little Mermaid"},
+  {text:"Our fate lives within us. You only have to be brave enough to see it.",char:"— Merida, Brave"},
+  {text:"The things that make me different are the things that make me.",char:"— Piglet, Winnie the Pooh"},
+  {text:"I am not afraid. I was born to do this.",char:"— Moana"},
+  {text:"Change is good.",char:"— Rafiki, The Lion King"},
+  {text:"Love is putting someone else's needs before yours.",char:"— Olaf, Frozen"},
+  {text:"The flower that blooms in adversity is the most rare and beautiful of all.",char:"— The Emperor, Mulan"},
+  {text:"Venture outside your comfort zone. The rewards are worth it.",char:"— Rapunzel, Tangled"},
+  {text:"I'd rather die tomorrow than live a hundred years without knowing you.",char:"— John Smith, Pocahontas"},
+  {text:"You control your destiny — you don't need magic to do it.",char:"— Merida, Brave"},
+  {text:"There's no place like home.",char:"— Dumbo"},
+  {text:"We may have started in different places, but look where we ended up.",char:"— Tiana, The Princess and the Frog"},
+  {text:"I'm surrounded by idiots.",char:"— Scar, The Lion King"},
+  {text:"To die will be an awfully big adventure.",char:"— Peter Pan"},
+  {text:"The only way to get what you want in this world is through hard work.",char:"— Tiana, The Princess and the Frog"},
+  {text:"If you don't know where you want to go, then it doesn't matter which path you take.",char:"— The Cheshire Cat, Alice in Wonderland"},
+  {text:"You are braver than you believe.",char:"— Christopher Robin, Winnie the Pooh"},
+  {text:"It's kind of fun to do the impossible.",char:"— Walt Disney"},
+  {text:"All it takes is faith and trust — and a little bit of pixie dust.",char:"— Peter Pan"},
+  {text:"I can't go back to yesterday because I was a different person then.",char:"— Alice, Alice in Wonderland"},
+  {text:"Go. Live your dream.",char:"— Hook, Tangled"},
+  {text:"The past can hurt. But the way I see it, you can either run from it or learn from it.",char:"— Rafiki, The Lion King"},
+  {text:"Even miracles take a little time.",char:"— Fairy Godmother, Cinderella"},
+  {text:"Giving up is for rookies.",char:"— Philoctetes, Hercules"},
+  {text:"Just because you can doesn't mean you should.",char:"— Mr. Incredible, The Incredibles"},
+  {text:"The heart is not so easily changed, but the head can be persuaded.",char:"— The Grandmother, Pocahontas"},
+  {text:"Fish are friends, not food.",char:"— Bruce, Finding Nemo"},
+  {text:"I never look back, darling. It distracts from the now.",char:"— Edna Mode, The Incredibles"},
+  {text:"My dream wouldn't be complete without you in it.",char:"— Tiana, The Princess and the Frog"},
+  {text:"When life gets you down, do you wanna know what you've gotta do? Just keep swimming.",char:"— Dory, Finding Nemo"},
+  {text:"You think the only people who are people, are the people who look and think like you.",char:"— Pocahontas"},
+];
+
+// --- Hourly quote logic — cycles through all 50, never repeats within 50 hours --
+// Uses hours since a fixed epoch so all devices show the same quote at the same time
+function getHourlyQuoteIdx(){
+  const hoursSinceEpoch=Math.floor(Date.now()/3600000);
+  return hoursSinceEpoch % quotes.length;
+}
+const quoteTextEl=document.getElementById('quote-text'),quoteCharEl=document.getElementById('quote-char'),quoteBoxEl=document.getElementById('quote-box');
+function setQuote(idx){
+  // Always use the global hourly index so all phones show the same quote
+  const i=(idx!==undefined?idx:getHourlyQuoteIdx())%quotes.length;
+  const q=quotes[i];
+  quoteTextEl.textContent='\u201C'+q.text+'\u201D';
+  quoteCharEl.textContent=q.char;
+  quoteBoxEl.classList.remove('quote-animate');
+  void quoteBoxEl.offsetWidth;
+  quoteBoxEl.classList.add('quote-animate');
+}
+
+// --- Main countdown -------------------------------------------------------
+const target=new Date(2026,4,27,14,20,0);
+const daysEl=document.getElementById('cd-days'),hoursEl=document.getElementById('cd-hours'),minsEl=document.getElementById('cd-mins'),secsEl=document.getElementById('cd-secs');
+function pad(n){return String(Math.max(0,n)).padStart(2,'0');}
+let lastHour=-1,initDone=false;
+
+function updateCountdown(){
+  const now=new Date(),diff=target-now;
+  if(diff<=0){daysEl.textContent='00';hoursEl.textContent='00';minsEl.textContent='00';secsEl.textContent='00';setQuote(0);if(!gameOver){gameOver=true;openWinner();}launchFireworks(35);return;}
+  const ts=Math.floor(diff/1000),days=Math.floor(ts/86400),hours=Math.floor((ts%86400)/3600),mins=Math.floor((ts%3600)/60),secs=ts%60;
+  daysEl.textContent=pad(days);hoursEl.textContent=pad(hours);minsEl.textContent=pad(mins);secsEl.textContent=pad(secs);
+  const qi=getHourlyQuoteIdx(); // synced hourly index — same on all devices
+  if(!initDone){setQuote(qi);initDone=true;}
+  if(mins===0&&secs===0&&hours!==lastHour){lastHour=hours;setQuote(qi);launchFireworks(18);hoursEl.classList.remove('flash');void hoursEl.offsetWidth;hoursEl.classList.add('flash');spawnPixie();}
+  if(secs%10===0&&secs!==0)spawnPixie();
+  updateTriviaUI();
+  // Update locked screen if open
+  if(!document.getElementById('screen-locked').classList.contains('hidden'))updateLockedScreen();
+  const daysLeft=Math.floor(diff/86400000);
+  const wBtn=document.getElementById('weather-btn'),wSub=document.getElementById('weather-sub');
+  if(daysLeft<=7&&!weatherUnlocked){weatherUnlocked=true;wBtn.classList.remove('locked');wBtn.classList.add('weather-ready');wSub.textContent='Tap for forecast!';}
+  else if(!weatherUnlocked&&daysLeft>7){wSub.textContent='Unlocks in '+(daysLeft-7)+' day'+(daysLeft-7!==1?'s':'');}
+  // Maps unlock at 3 days
+  const mBtn=document.getElementById('maps-btn'),mSub=document.getElementById('maps-sub');
+  if(mBtn&&mSub){
+    if(daysLeft<=3&&!mapsUnlocked){mapsUnlocked=true;mBtn.classList.remove('locked');mBtn.classList.add('weather-ready');mSub.textContent='Tap for maps!';}
+    else if(!mapsUnlocked&&daysLeft>3){mSub.textContent='Unlocks in '+(daysLeft-3)+' day'+(daysLeft-3!==1?'s':'');}
+  }
+}
+updateCountdown();setInterval(updateCountdown,1000);
+
+})();
+</script>
+</body>
+</html>
